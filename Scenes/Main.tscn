@@ -1,0 +1,42 @@
+[gd_scene load_steps=9 format=3 uid="uid://bkb1eqv7p84mo"]
+
+[ext_resource type="Texture2D" uid="uid://cn185gr043yon" path="res://Assets/rock.png" id="1_idj7w"]
+[ext_resource type="Script" uid="uid://d3jgarxlp5o86" path="res://Scripts/ParticleController.cs" id="2_kln2b"]
+[ext_resource type="Script" uid="uid://cxhrwixrklppt" path="res://Scripts/PhysicsChain.cs" id="3_kln2b"]
+[ext_resource type="PackedScene" uid="uid://bs20v3bd4rxhu" path="res://Scenes/ChainSegment.tscn" id="4_rgh2o"]
+[ext_resource type="Texture2D" uid="uid://dar2nieslupce" path="res://Assets/icon.svg" id="5_pbw6q"]
+[ext_resource type="Script" uid="uid://defaxlj4uf7q8" path="res://Scripts/Player.cs" id="5_v1gob"]
+[ext_resource type="Script" uid="uid://bto5r6smmo8jr" path="res://Scripts/LaserDetector.cs" id="7_jw32o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v1gob"]
+size = Vector2(58, 58)
+
+[node name="Main" type="Node2D"]
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+position = Vector2(100, 100)
+texture = ExtResource("1_idj7w")
+script = ExtResource("2_kln2b")
+
+[node name="PhysicsChain" type="Node2D" parent="."]
+position = Vector2(500, 0)
+script = ExtResource("3_kln2b")
+ChainSegments = 5
+SegmentScene = ExtResource("4_rgh2o")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+script = ExtResource("5_v1gob")
+Speed = 300.0
+ChainPath = NodePath("../PhysicsChain")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_v1gob")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_pbw6q")
+
+[node name="LaserDetector" type="Node2D" parent="."]
+position = Vector2(100, 100)
+script = ExtResource("7_jw32o")
+PlayerPath = NodePath("../Player")
